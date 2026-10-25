@@ -74,7 +74,66 @@ body.has-social{padding-bottom:84px}
 .social a:hover,.social a:focus-visible{background:rgba(214,163,84,.16)}
 .social svg{width:21px;height:21px;flex:none}
 @media (max-width:420px){.social a span{display:none}.social a{padding:10px 13px}}
+
+/* round buttons fill with color on hover, like the example site */
+.ring{overflow:hidden;transition:color .45s}
+.ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--fill,var(--ink));transform:scale(0);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.ring span{position:relative;z-index:1}
+.ring:hover,.ring:focus-visible{color:var(--on-fill,var(--bg))}
+.ring:hover::after,.ring:focus-visible::after{transform:scale(1)}
+.slide .ring,.hero .ring{--fill:var(--gold-l);--on-fill:var(--black)}
+/* soft gold glows that drift behind the page and move a little when scrolling */
+.glow{position:fixed;z-index:-1;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none;will-change:transform}
+.glow.g1{width:420px;height:420px;left:-120px;top:30vh;background:radial-gradient(circle,#efc98f,transparent 70%);animation:drift 24s ease-in-out infinite alternate}
+.glow.g2{width:360px;height:360px;right:-120px;top:110vh;background:radial-gradient(circle,#f3d7b6,transparent 70%);animation:drift 30s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{translate:0 0}to{translate:60px -80px}}
+/* hero slideshow */
+.slides{position:relative;margin:16px;height:min(76vh,600px);min-height:470px;border-radius:34px 6px 34px 6px;overflow:hidden;background:var(--black);color:#f4ece0}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;opacity:0;visibility:hidden;transition:opacity 1.1s,visibility 1.1s}
+.slide.on{opacity:1;visibility:visible}
+.slide.brand{background:radial-gradient(120% 90% at 50% 0%,#2a2219 0%,var(--black) 62%)}
+.slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.08);transition:transform 7s ease-out}
+.slide.on .bg{transform:scale(1)}
+.slide .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,11,.15) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.88) 100%)}
+.slide > *:not(.bg){position:relative;z-index:1}
+.slide .logo{width:min(270px,70vw);height:auto;margin:0 0 6px}
+.slide .script{color:var(--gold-l);font-size:36px;line-height:1;margin:4px 0}
+.slide h2{font:500 32px/1.12 Cormorant,Georgia,serif;margin:4px 0 8px;max-width:620px;-webkit-line-clamp:3}
+.slide p{max-width:520px;margin:0 auto;color:#d9cfbf;font-size:14px}
+.slide .ring{margin-top:20px;color:var(--gold-l)}
+.dots{position:absolute;z-index:2;left:0;right:0;bottom:16px;display:flex;gap:8px;justify-content:center}
+.dots button{width:8px;height:8px;border-radius:50%;border:1px solid var(--gold-l);background:transparent;padding:0;cursor:pointer;transition:width .3s,background .3s}
+.dots button.on{width:22px;border-radius:999px;background:var(--gold-l)}
+@media (min-width:800px){.slide h2{font-size:42px}.slide.photo{align-items:flex-start;text-align:left;padding:40px 7%}.slide.photo p{margin:0}
+  .slide.photo .bg::after{background:linear-gradient(90deg,rgba(13,12,11,.88) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.05) 100%)}}
+/* scrolling ticker */
+.ticker{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:30px 0 8px;padding:12px 0;white-space:nowrap}
+.ticker .track{display:inline-block;animation:tick 32s linear infinite;font:500 12px/1 Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+.ticker span{margin:0 26px}.ticker i{font-style:normal;color:var(--gold)}
+@keyframes tick{to{transform:translateX(-50%)}}
+/* shop by category */
+.collections{display:flex;gap:14px;overflow-x:auto;padding:8px 16px 4px;max-width:1100px;margin:0 auto;scrollbar-width:none;scroll-snap-type:x mandatory}
+.collections button{flex:0 0 150px;scroll-snap-align:start;position:relative;aspect-ratio:3/4;border:0;padding:0;border-radius:24px 4px 24px 4px;overflow:hidden;cursor:pointer;background:#efe7dc;color:#fff;text-align:left}
+.collections img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.collections button:hover img{transform:scale(1.06)}
+.collections b{position:absolute;inset:auto 0 0 0;padding:34px 12px 12px;font:500 19px/1.1 Cormorant,Georgia,serif;background:linear-gradient(transparent,rgba(13,12,11,.75))}
+.collections small{display:block;font:500 10px/1.4 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);margin-top:3px}
+/* featured tiles break the grid rhythm */
+main{grid-auto-flow:dense}
+.deal.big{grid-column:span 2}
+.deal.big .pic{aspect-ratio:4/3;border-radius:44px 8px 44px 8px}
+.deal.big h2{font:500 22px/1.2 Cormorant,Georgia,serif;-webkit-line-clamp:2}
+@media (min-width:700px){.deal.big{grid-row:span 2}.deal.big .pic{aspect-ratio:1}}
+/* second photo on hover */
+.pic img.alt{position:absolute;inset:0;opacity:0;transition:opacity .45s,transform .5s}
+.deal a:hover .pic img.alt{opacity:1}
+/* products rise into view while scrolling */
+html.js .deal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+html.js .deal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.glow,.ticker .track{animation:none}html.js .deal{opacity:1;transform:none;transition:none}
+  .slide,.slide .bg{transition:none}}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
 <div class="announce">✦ New hand-picked finds every day ✦</div>

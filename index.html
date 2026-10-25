@@ -75,32 +75,110 @@ body.has-social{padding-bottom:84px}
 .social a:hover,.social a:focus-visible{background:rgba(214,163,84,.16)}
 .social svg{width:21px;height:21px;flex:none}
 @media (max-width:420px){.social a span{display:none}.social a{padding:10px 13px}}
+
+/* round buttons fill with color on hover, like the example site */
+.ring{overflow:hidden;transition:color .45s}
+.ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--fill,var(--ink));transform:scale(0);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.ring span{position:relative;z-index:1}
+.ring:hover,.ring:focus-visible{color:var(--on-fill,var(--bg))}
+.ring:hover::after,.ring:focus-visible::after{transform:scale(1)}
+.slide .ring,.hero .ring{--fill:var(--gold-l);--on-fill:var(--black)}
+/* soft gold glows that drift behind the page and move a little when scrolling */
+.glow{position:fixed;z-index:-1;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none;will-change:transform}
+.glow.g1{width:420px;height:420px;left:-120px;top:30vh;background:radial-gradient(circle,#efc98f,transparent 70%);animation:drift 24s ease-in-out infinite alternate}
+.glow.g2{width:360px;height:360px;right:-120px;top:110vh;background:radial-gradient(circle,#f3d7b6,transparent 70%);animation:drift 30s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{translate:0 0}to{translate:60px -80px}}
+/* hero slideshow */
+.slides{position:relative;margin:16px;height:min(76vh,600px);min-height:470px;border-radius:34px 6px 34px 6px;overflow:hidden;background:var(--black);color:#f4ece0}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;opacity:0;visibility:hidden;transition:opacity 1.1s,visibility 1.1s}
+.slide.on{opacity:1;visibility:visible}
+.slide.brand{background:radial-gradient(120% 90% at 50% 0%,#2a2219 0%,var(--black) 62%)}
+.slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.08);transition:transform 7s ease-out}
+.slide.on .bg{transform:scale(1)}
+.slide .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,11,.15) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.88) 100%)}
+.slide > *:not(.bg){position:relative;z-index:1}
+.slide .logo{width:min(270px,70vw);height:auto;margin:0 0 6px}
+.slide .script{color:var(--gold-l);font-size:36px;line-height:1;margin:4px 0}
+.slide h2{font:500 32px/1.12 Cormorant,Georgia,serif;margin:4px 0 8px;max-width:620px;-webkit-line-clamp:3}
+.slide p{max-width:520px;margin:0 auto;color:#d9cfbf;font-size:14px}
+.slide .ring{margin-top:20px;color:var(--gold-l)}
+.dots{position:absolute;z-index:2;left:0;right:0;bottom:16px;display:flex;gap:8px;justify-content:center}
+.dots button{width:8px;height:8px;border-radius:50%;border:1px solid var(--gold-l);background:transparent;padding:0;cursor:pointer;transition:width .3s,background .3s}
+.dots button.on{width:22px;border-radius:999px;background:var(--gold-l)}
+@media (min-width:800px){.slide h2{font-size:42px}.slide.photo{align-items:flex-start;text-align:left;padding:40px 7%}.slide.photo p{margin:0}
+  .slide.photo .bg::after{background:linear-gradient(90deg,rgba(13,12,11,.88) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.05) 100%)}}
+/* scrolling ticker */
+.ticker{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:30px 0 8px;padding:12px 0;white-space:nowrap}
+.ticker .track{display:inline-block;animation:tick 32s linear infinite;font:500 12px/1 Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+.ticker span{margin:0 26px}.ticker i{font-style:normal;color:var(--gold)}
+@keyframes tick{to{transform:translateX(-50%)}}
+/* shop by category */
+.collections{display:flex;gap:14px;overflow-x:auto;padding:8px 16px 4px;max-width:1100px;margin:0 auto;scrollbar-width:none;scroll-snap-type:x mandatory}
+.collections button{flex:0 0 150px;scroll-snap-align:start;position:relative;aspect-ratio:3/4;border:0;padding:0;border-radius:24px 4px 24px 4px;overflow:hidden;cursor:pointer;background:#efe7dc;color:#fff;text-align:left}
+.collections img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.collections button:hover img{transform:scale(1.06)}
+.collections b{position:absolute;inset:auto 0 0 0;padding:34px 12px 12px;font:500 19px/1.1 Cormorant,Georgia,serif;background:linear-gradient(transparent,rgba(13,12,11,.75))}
+.collections small{display:block;font:500 10px/1.4 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);margin-top:3px}
+/* featured tiles break the grid rhythm */
+main{grid-auto-flow:dense}
+.deal.big{grid-column:span 2}
+.deal.big .pic{aspect-ratio:4/3;border-radius:44px 8px 44px 8px}
+.deal.big h2{font:500 22px/1.2 Cormorant,Georgia,serif;-webkit-line-clamp:2}
+@media (min-width:700px){.deal.big{grid-row:span 2}.deal.big .pic{aspect-ratio:1}}
+/* second photo on hover */
+.pic img.alt{position:absolute;inset:0;opacity:0;transition:opacity .45s,transform .5s}
+.deal a:hover .pic img.alt{opacity:1}
+/* products rise into view while scrolling */
+html.js .deal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+html.js .deal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.glow,.ticker .track{animation:none}html.js .deal{opacity:1;transform:none;transition:none}
+  .slide,.slide .bg{transition:none}}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body class="has-social">
+<div class="glow g1"></div><div class="glow g2"></div>
 <div class="announce">✦ New hand-picked finds every day ✦</div>
 <div class="top">
   <a href="./"><img src="icon.png" alt="" width="36" height="23"></a>
   <a class="brand" href="./">Worth It <em>Finds</em></a>
   <a class="tg" href="https://t.me/worth_it_finds" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.9 10.6c-1.3.5-1.2 1.3-.2 1.6l4.8 1.5 1.8 5.6c.2.7.4.9.9.9.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9.4 15.1l-.3 3.3-1.4-4.6 9.6-6.1c.5-.3.9-.1.5.2l-8.4 7.2Z"/></svg></a>
 </div>
-<section class="hero">
-  <img class="logo" src="logo-clear.png" alt="Worth It Finds" width="280" height="163">
+<section class="slides" aria-label="Highlights"><div class="slide brand on">
+  <img class="logo" src="logo-clear.png" alt="Worth It Finds" width="270" height="157">
   <p class="script">hand-picked for you</p>
-  <h1>Finds worth buying,<br>every day</h1>
+  <h2>Finds worth buying, every day</h2>
   <p>Great products. Better prices. Clever gadgets, home and kitchen helpers, beauty tools and more, checked for
   ratings and real orders before they make the list.</p>
-  <a class="ring" href="#deals">Shop the<br>finds</a>
-</section>
+  <a class="ring" href="#deals"><span>Shop the<br>finds</span></a>
+</div><div class="slide photo">
+  <div class="bg" style="background-image:url(img/3256809322643559.jpg)"></div>
+  <p class="script">just dropped</p>
+  <h2>Upgrade Your Daily Hair Styling</h2>
+  <p>$1.37 · 98% positive · 35,000+ orders</p>
+  <a class="ring" href="https://s.click.aliexpress.com/e/_c3QMKfd9" target="_blank" rel="sponsored nofollow noopener"><span>View<br>deal</span></a>
+</div><div class="slide photo">
+  <div class="bg" style="background-image:url(img/3256812791577185.jpg)"></div>
+  <p class="script">loved by thousands</p>
+  <h2>Tame Your Messy Desk Cords</h2>
+  <p>65,000+ orders and counting.</p>
+  <a class="ring" href="https://s.click.aliexpress.com/e/_c4WKS1tH" target="_blank" rel="sponsored nofollow noopener"><span>See the<br>best seller</span></a>
+</div><div class="slide photo">
+  <div class="bg" style="background-image:url(img/3256812402692342.jpg)"></div>
+  <p class="script">never miss a find</p>
+  <h2>New deals on Telegram, every day</h2>
+  <p>Join the channel for four hand-picked finds a day.</p>
+  <a class="ring" href="https://t.me/worth_it_finds" target="_blank" rel="noopener"><span>Join<br>free</span></a>
+</div><div class="dots"><button aria-label="Slide 1" class="on"></button><button aria-label="Slide 2"></button><button aria-label="Slide 3"></button><button aria-label="Slide 4"></button></div></section>
 <div class="section" id="deals">
   <p class="script">Today's Finds</p>
   <p>Prices change fast · final price at checkout</p>
 </div>
 <nav class="cats"><button class="on" data-cat="">All</button><button data-cat="Desk Accessories &amp; Organizer">Desk Accessories &amp; Organizer</button><button data-cat="Home Appliance Parts">Home Appliance Parts</button><button data-cat="Household Merchandises">Household Merchandises</button><button data-cat="Interior Accessories">Interior Accessories</button><button data-cat="New Headwear">New Headwear</button><button data-cat="Travel Accessories">Travel Accessories</button></nav>
 <main>
-<article class="deal" data-cat="New Headwear">
+<article class="deal big" data-cat="New Headwear">
   <a href="https://s.click.aliexpress.com/e/_c3QMKfd9" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256809322643559.jpg" alt="Upgrade Your Daily Hair Styling" loading="lazy" width="600" height="600"><span class="new">New</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256809322643559.jpg" alt="Upgrade Your Daily Hair Styling" loading="lazy" width="600" height="600"><img class="alt" src="img/3256809322643559-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="new">New</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Upgrade Your Daily Hair Styling</h2>
     <p class="price"><b>$1.37</b> <s>$2.75</s></p>
     <p class="meta"><i>★</i> 98% · 35,000+ orders</p>
@@ -108,7 +186,7 @@ body.has-social{padding-bottom:84px}
 </article>
 <article class="deal" data-cat="Home Appliance Parts">
   <a href="https://s.click.aliexpress.com/e/_c3lnbVrh" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256812402692342.jpg" alt="Stop Floor Spills from Your Washer" loading="lazy" width="600" height="600"><span class="new">New</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256812402692342.jpg" alt="Stop Floor Spills from Your Washer" loading="lazy" width="600" height="600"><img class="alt" src="img/3256812402692342-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="new">New</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Stop Floor Spills from Your Washer</h2>
     <p class="price"><b>$3.02</b> <s>$6.04</s></p>
     <p class="meta"><i>★</i> 98% · 57,000+ orders</p>
@@ -116,7 +194,7 @@ body.has-social{padding-bottom:84px}
 </article>
 <article class="deal" data-cat="Interior Accessories">
   <a href="https://s.click.aliexpress.com/e/_c3bTlCcr" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256807751694815.jpg" alt="Turn Your Steering Wheel Into a Desk" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256807751694815.jpg" alt="Turn Your Steering Wheel Into a Desk" loading="lazy" width="600" height="600"><img class="alt" src="img/3256807751694815-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Turn Your Steering Wheel Into a Desk</h2>
     <p class="price"><b>$56.89</b> <s>$118.52</s></p>
     <p class="meta"><i>★</i> 98% · 3,600+ orders</p>
@@ -124,7 +202,7 @@ body.has-social{padding-bottom:84px}
 </article>
 <article class="deal" data-cat="Travel Accessories">
   <a href="https://s.click.aliexpress.com/e/_c3DnbVNd" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256812556805529.jpg" alt="Never Pay Excess Baggage Fees Again" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256812556805529.jpg" alt="Never Pay Excess Baggage Fees Again" loading="lazy" width="600" height="600"><img class="alt" src="img/3256812556805529-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Never Pay Excess Baggage Fees Again</h2>
     <p class="price"><b>$4.05</b> <s>$8.12</s></p>
     <p class="meta"><i>★</i> 98% · 36,000+ orders</p>
@@ -132,7 +210,7 @@ body.has-social{padding-bottom:84px}
 </article>
 <article class="deal" data-cat="Household Merchandises">
   <a href="https://s.click.aliexpress.com/e/_c4bWTwcn" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256813079641867.jpg" alt="Clean Ceiling Fans Without the Hassle" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256813079641867.jpg" alt="Clean Ceiling Fans Without the Hassle" loading="lazy" width="600" height="600"><img class="alt" src="img/3256813079641867-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Clean Ceiling Fans Without the Hassle</h2>
     <p class="price"><b>$1.51</b> <s>$3.02</s></p>
     <p class="meta"><i>★</i> 98% · 37,000+ orders</p>
@@ -140,25 +218,53 @@ body.has-social{padding-bottom:84px}
 </article>
 <article class="deal" data-cat="Desk Accessories &amp; Organizer">
   <a href="https://s.click.aliexpress.com/e/_c4WKS1tH" target="_blank" rel="sponsored nofollow noopener">
-    <div class="pic"><img src="img/3256812791577185.jpg" alt="Tame Your Messy Desk Cords" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
+    <div class="pic"><img src="img/3256812791577185.jpg" alt="Tame Your Messy Desk Cords" loading="lazy" width="600" height="600"><img class="alt" src="img/3256812791577185-2.jpg" alt="" loading="lazy" width="600" height="600"><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div>
     <h2>Tame Your Messy Desk Cords</h2>
     <p class="price"><b>$1.87</b> <s>$3.75</s></p>
     <p class="meta"><i>★</i> 98% · 65,000+ orders</p>
   </a>
 </article></main>
-<div class="more"><a class="ring" href="https://t.me/worth_it_finds" target="_blank" rel="noopener">More daily<br>deals</a></div>
+<div class="ticker" aria-hidden="true"><div class="track"><span>Hand-picked daily</span><i>✦</i><span>Ratings checked</span><i>✦</i><span>Real orders</span><i>✦</i><span>New finds every day</span><i>✦</i><span>Worth it</span><i>✦</i><span>Hand-picked daily</span><i>✦</i><span>Ratings checked</span><i>✦</i><span>Real orders</span><i>✦</i><span>New finds every day</span><i>✦</i><span>Worth it</span><i>✦</i><span>Hand-picked daily</span><i>✦</i><span>Ratings checked</span><i>✦</i><span>Real orders</span><i>✦</i><span>New finds every day</span><i>✦</i><span>Worth it</span><i>✦</i><span>Hand-picked daily</span><i>✦</i><span>Ratings checked</span><i>✦</i><span>Real orders</span><i>✦</i><span>New finds every day</span><i>✦</i><span>Worth it</span><i>✦</i></div></div>
+<div class="section"><p class="script">Shop by category</p><p>Tap a category to see its finds</p></div>
+<div class="collections"><button data-cat="Desk Accessories &amp; Organizer"><img src="img/3256812791577185.jpg" alt="" loading="lazy" width="300" height="400"><b>Desk Accessories &amp; Organizer<small>1 find</small></b></button><button data-cat="Home Appliance Parts"><img src="img/3256812402692342.jpg" alt="" loading="lazy" width="300" height="400"><b>Home Appliance Parts<small>1 find</small></b></button><button data-cat="Household Merchandises"><img src="img/3256813079641867.jpg" alt="" loading="lazy" width="300" height="400"><b>Household Merchandises<small>1 find</small></b></button><button data-cat="Interior Accessories"><img src="img/3256807751694815.jpg" alt="" loading="lazy" width="300" height="400"><b>Interior Accessories<small>1 find</small></b></button><button data-cat="New Headwear"><img src="img/3256809322643559.jpg" alt="" loading="lazy" width="300" height="400"><b>New Headwear<small>1 find</small></b></button><button data-cat="Travel Accessories"><img src="img/3256812556805529.jpg" alt="" loading="lazy" width="300" height="400"><b>Travel Accessories<small>1 find</small></b></button></div>
+<div class="more"><a class="ring" href="https://t.me/worth_it_finds" target="_blank" rel="noopener"><span>More daily<br>deals</span></a></div>
 <footer>
   <p class="serif">Worth It <em>Finds</em></p>
   <p>Ad: affiliate links. I may earn a commission at no extra cost to you.</p>
   <p>© Worth It Finds · <a href="https://t.me/worth_it_finds" rel="noopener">Daily deals on Telegram</a> · <a href="privacy.html">Privacy</a> · Updated 2026-10-25</p>
 </footer>
-<nav class="social" aria-label="Follow Worth It Finds"><a href="https://t.me/worth_it_finds" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.9 10.6c-1.3.5-1.2 1.3-.2 1.6l4.8 1.5 1.8 5.6c.2.7.4.9.9.9.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9.4 15.1l-.3 3.3-1.4-4.6 9.6-6.1c.5-.3.9-.1.5.2l-8.4 7.2Z"/></svg><span>Telegram</span></a></nav>
+<nav class="social" aria-label="Follow Worth It Finds"><a href="https://t.me/worth_it_finds" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.4 2.9 10.6c-1.3.5-1.2 1.3-.2 1.6l4.8 1.5 1.8 5.6c.2.7.4.9.9.9.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9.4 15.1l-.3 3.3-1.4-4.6 9.6-6.1c.5-.3.9-.1.5.2l-8.4 7.2Z"/></svg><span>Telegram</span></a><a href="https://www.instagram.com/worth_it_finds2/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.pinterest.com/Worth__ItFinds/" target="_blank" rel="noopener" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-.8-.2-2 0-2.9l1.2-5s-.3-.6-.3-1.5c0-1.4.8-2.5 1.9-2.5.9 0 1.3.7 1.3 1.5 0 .9-.6 2.2-.9 3.5-.2 1 .5 1.9 1.6 1.9 1.9 0 3.3-2 3.3-4.9 0-2.6-1.8-4.4-4.5-4.4-3 0-4.8 2.3-4.8 4.6 0 .9.4 1.9.8 2.4l.1.4-.3 1.2c0 .2-.2.3-.4.2-1.3-.6-2.1-2.5-2.1-4.1 0-3.3 2.4-6.4 7-6.4 3.7 0 6.5 2.6 6.5 6.1 0 3.6-2.3 6.6-5.5 6.6-1.1 0-2.1-.6-2.4-1.2l-.7 2.5c-.2.9-.9 2.1-1.3 2.8A10 10 0 1 0 12 2Z"/></svg><span>Pinterest</span></a></nav>
 <script>
-document.querySelectorAll('nav.cats button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('nav.cats button').forEach(x=>x.classList.toggle('on',x===b));
-  const c=b.dataset.cat;
-  document.querySelectorAll('.deal').forEach(d=>d.hidden=!!c&&d.dataset.cat!==c);
-});
+(function(){
+  var cats=document.querySelectorAll('nav.cats button');
+  function pick(c){cats.forEach(function(x){x.classList.toggle('on',x.dataset.cat===c)});
+    document.querySelectorAll('.deal').forEach(function(d){d.hidden=!!c&&d.dataset.cat!==c});}
+  cats.forEach(function(b){b.onclick=function(){pick(b.dataset.cat)}});
+  document.querySelectorAll('.collections button').forEach(function(b){b.onclick=function(){
+    pick(b.dataset.cat);document.getElementById('deals').scrollIntoView({behavior:'smooth'})}});
+  // slideshow: changes every 6 s, dots, swipe, pauses while touched or hovered
+  var slides=document.querySelectorAll('.slide'),dots=document.querySelectorAll('.dots button'),i=0,t;
+  function show(n){i=(n+slides.length)%slides.length;slides.forEach(function(s,k){s.classList.toggle('on',k===i)});
+    dots.forEach(function(d,k){d.classList.toggle('on',k===i)})}
+  function play(){clearInterval(t);if(slides.length>1)t=setInterval(function(){show(i+1)},6000)}
+  dots.forEach(function(d,k){d.onclick=function(){show(k);play()}});
+  var box=document.querySelector('.slides'),x0=null;
+  if(box){box.onmouseenter=function(){clearInterval(t)};box.onmouseleave=play;
+    box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;clearInterval(t)},{passive:true});
+    box.addEventListener('touchend',function(e){if(x0!==null){var dx=e.changedTouches[0].clientX-x0;
+      if(Math.abs(dx)>40)show(i+(dx<0?1:-1));x0=null}play()},{passive:true});}
+  play();
+  // products fade up into view
+  var cards=document.querySelectorAll('.deal');
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    cards.forEach(function(c,k){c.style.transitionDelay=(k%4)*70+'ms';io.observe(c)});}
+  else cards.forEach(function(c){c.classList.add('in')});
+  // background glows drift a little with scrolling
+  var g=document.querySelectorAll('.glow');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)window.addEventListener('scroll',function(){
+    var y=scrollY;g.forEach(function(e,k){e.style.transform='translateY('+(-y*(k?0.12:0.22))+'px)'})},{passive:true});
+})();
 </script>
 </body>
 </html>
