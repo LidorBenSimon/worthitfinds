@@ -79,11 +79,13 @@ body.has-social{padding-bottom:84px}
    the text stays on top and stays readable (black on gold) */
 .ring{overflow:hidden;isolation:isolate;transition:color .3s ease}
 .ring::after{content:"";position:absolute;z-index:-1;left:-60%;width:220%;aspect-ratio:1;top:108%;
-  border-radius:42%;background:var(--gold-l);transition:top 1.3s cubic-bezier(.3,.6,.25,1);animation:wave 5s linear infinite}
+  border-radius:42%;background:var(--gold-l);transition:top 1.9s cubic-bezier(.35,.55,.3,1);animation:wave 5s linear infinite}
 .ring::before{z-index:1}
 .ring span{position:relative;z-index:2}
-.ring:hover,.ring:focus-visible{color:var(--black);transition:color .4s ease .45s}  /* turns black once the gold reaches the text */
-.ring:hover::after,.ring:focus-visible::after{top:-28%}
+/* a.ring:hover outweighs ".slide .ring" and ".hero .ring", so every button's text turns black;
+   the change starts as the rising gold reaches the middle of the button */
+a.ring:hover,a.ring:focus-visible{color:var(--black);transition:color .25s ease .3s}
+a.ring:hover::after,a.ring:focus-visible::after{top:-28%}
 @keyframes wave{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.ring::after{animation:none;transition:none}}
 /* soft gold glows that drift behind the page and move a little when scrolling */
@@ -93,10 +95,10 @@ body.has-social{padding-bottom:84px}
 @keyframes drift{from{translate:0 0}to{translate:60px -80px}}
 /* hero slideshow */
 .slides{position:relative;margin:16px;height:min(76vh,600px);min-height:470px;border-radius:34px 6px 34px 6px;overflow:hidden;background:var(--black);color:#f4ece0}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;opacity:0;visibility:hidden;transition:opacity 1.1s,visibility 1.1s}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;opacity:0;visibility:hidden;transition:opacity .8s,visibility .8s}
 .slide.on{opacity:1;visibility:visible}
 .slide.brand{background:radial-gradient(120% 90% at 50% 0%,#2a2219 0%,var(--black) 62%)}
-.slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.08);transition:transform 7s ease-out}
+.slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.08);transition:transform 5s ease-out}
 .slide.on .bg{transform:scale(1)}
 .slide .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,11,.15) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.88) 100%)}
 .slide > *:not(.bg){position:relative;z-index:1}
