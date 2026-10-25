@@ -75,13 +75,17 @@ body.has-social{padding-bottom:84px}
 .social svg{width:21px;height:21px;flex:none}
 @media (max-width:420px){.social a span{display:none}.social a{padding:10px 13px}}
 
-/* round buttons fill with color on hover, like the example site */
-.ring{overflow:hidden;transition:color .45s}
-.ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--fill,var(--ink));transform:scale(0);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
-.ring span{position:relative;z-index:1}
-.ring:hover,.ring:focus-visible{color:var(--on-fill,var(--bg))}
-.ring:hover::after,.ring:focus-visible::after{transform:scale(1)}
-.slide .ring,.hero .ring{--fill:var(--gold-l);--on-fill:var(--black)}
+/* round buttons fill with gold from the bottom up, like liquid with a moving wave edge;
+   the text stays on top and stays readable (black on gold) */
+.ring{overflow:hidden;isolation:isolate;transition:color .3s ease}
+.ring::after{content:"";position:absolute;z-index:-1;left:-60%;width:220%;aspect-ratio:1;top:108%;
+  border-radius:42%;background:var(--gold-l);transition:top 1.3s cubic-bezier(.3,.6,.25,1);animation:wave 5s linear infinite}
+.ring::before{z-index:1}
+.ring span{position:relative;z-index:2}
+.ring:hover,.ring:focus-visible{color:var(--black);transition:color .4s ease .45s}  /* turns black once the gold reaches the text */
+.ring:hover::after,.ring:focus-visible::after{top:-28%}
+@keyframes wave{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ring::after{animation:none;transition:none}}
 /* soft gold glows that drift behind the page and move a little when scrolling */
 .glow{position:fixed;z-index:-1;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none;will-change:transform}
 .glow.g1{width:420px;height:420px;left:-120px;top:30vh;background:radial-gradient(circle,#efc98f,transparent 70%);animation:drift 24s ease-in-out infinite alternate}
@@ -106,6 +110,13 @@ body.has-social{padding-bottom:84px}
 .dots button.on{width:22px;border-radius:999px;background:var(--gold-l)}
 @media (min-width:800px){.slide h2{font-size:42px}.slide.photo{align-items:flex-start;text-align:left;padding:40px 7%}.slide.photo p{margin:0}
   .slide.photo .bg::after{background:linear-gradient(90deg,rgba(13,12,11,.88) 0%,rgba(13,12,11,.55) 45%,rgba(13,12,11,.05) 100%)}}
+/* hot right now: best sellers row */
+.hot{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 16px 8px;max-width:1100px;margin:0 auto;scrollbar-width:none}
+.hot::-webkit-scrollbar{display:none}
+.hot .hot-item{flex:0 0 min(64vw,250px);scroll-snap-align:start}
+@media (min-width:1000px){.hot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px;overflow:visible}}
+.rank{position:absolute;top:10px;left:10px;background:var(--gold-l);color:var(--black);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.slides{height:min(62vh,500px);min-height:420px;margin-top:34px}
 /* scrolling ticker */
 .ticker{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:30px 0 8px;padding:12px 0;white-space:nowrap}
 .ticker .track{display:inline-block;animation:tick 32s linear infinite;font:500 12px/1 Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase}
