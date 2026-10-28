@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Cool Finds Worth Buying | Worth It Finds</title>
+<link>https://lidorbensimon.github.io/worthitfinds/</link>
+<atom:link href="https://lidorbensimon.github.io/worthitfinds/feeds/cool-finds-worth-buying.xml" rel="self" type="application/rss+xml"/>
+<description>Hand-picked finds and deals, updated daily: home, kitchen, tech, beauty, pets and more.</description>
+<language>en-us</language>
+
+</channel>
+</rss>
